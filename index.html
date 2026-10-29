@@ -552,4 +552,18 @@ window.__unlock={unlocked:un,sample:window.__SAMPLE||null,get badge(){return las
 #palbTabs button{min-height:48px!important;font-size:16px!important}
 #palbList li{min-height:30px;height:auto!important;font-size:16px!important}
 </style>
+<!-- gamepad:start -->
+<script src="gamepad.js?v=2"></script>
+<script>
+GamepadSupport.init({
+ keys:{left:'ArrowLeft',right:'ArrowRight',up:'ArrowUp',down:'ArrowDown',a:'Space',x:'Space',y:'Space',b:function(){},start:'KeyP',back:function(p){if(p)document.getElementById('mute').click()}},
+ noRepeat:['a','x','y'],
+ ignoreSel:'#dock,#mute,#mu,#pz,#pause,#padt,#blastb,#inst,#ios,.tb,#dockHint,#pad,.pad',
+ menu:function(){return !!document.querySelector('#palbOv.on,#smpLock.on');},
+ cursor:function(){return state==='kitchen'&&!paused&&!document.querySelector('#palbOv.on,#smpLock.on');},
+ cursorSpeed:700,
+ hint:{text:'🎮 Controller: stick or D-pad to dig · in the kitchen the stick moves a hand, hold A to scrub, peel and tap · Start pause · Select mute',when:function(){return state==='title'&&!document.querySelector('#palbOv.on,#smpLock.on')}}
+});
+</script>
+<!-- gamepad:end -->
 </body></html>
