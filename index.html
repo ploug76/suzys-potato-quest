@@ -15,9 +15,7 @@ window.__vsettle={chk,key,get last(){return L}}})()</script><!--/vsettle-->
 html,body{margin:0;height:100%;overflow:hidden;background:#7ec8f0;touch-action:none;font-family:"Comic Sans MS","Chalkboard SE","Trebuchet MS",sans-serif;-webkit-user-select:none;user-select:none}
 canvas{display:block;position:fixed;left:0;top:0;width:100%;height:100%}
 .tb{position:fixed;top:8px;width:46px;height:46px;border-radius:50%;border:3px solid #fff;color:#fff;font-size:22px;display:none;z-index:3;padding:0}
-#pause{right:8px;background:#e8833a}#padt{right:62px;background:#6b8e23}#mute{right:116px;background:#c77dff}
-#pad{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);display:none;grid-template-columns:repeat(3,62px);grid-template-rows:repeat(3,62px);gap:4px;z-index:3;opacity:.7}
-#pad button{font-size:28px;border-radius:16px;border:3px solid #fff;background:#e8833a;color:#fff;padding:0}
+#pause{right:8px;background:#e8833a}#mute{right:116px;background:#c77dff}
 #inst{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);display:none;z-index:4;font-size:18px;font-weight:bold;font-family:inherit;padding:10px 22px;border-radius:30px;border:3px solid #fff;background:#6b8e23;color:#fff}
 #ios{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);display:none;z-index:4;background:#5a3a1a;color:#fff;padding:8px 14px;border-radius:12px;font-size:14px;text-align:center;width:80vw}
 </style><script>const FORCE_UNLOCKED = true; // Peter 10/28: free until further notice. Set to false to restore the lock.
@@ -36,8 +34,8 @@ document.querySelectorAll('link[rel=manifest]').forEach(l=>l.remove());
 if('serviceWorker' in navigator){try{navigator.serviceWorker.register=()=>new Promise(()=>{})}catch(e){}}
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();e.stopImmediatePropagation()},true);window.__ACS=[];['AudioContext','webkitAudioContext'].forEach(n=>{const O=window[n];if(!O)return;const W=function(...a){const c=new O(...a);window.__ACS.push(c);return c};W.prototype=O.prototype;try{Object.setPrototypeOf(W,O)}catch(e){}window[n]=W})}catch(e){}})()</script><!--/sample--></head><body>
 <canvas id="c"></canvas>
-<button id="pause" class="tb" aria-label="Pause">⏸</button><button id="padt" class="tb" aria-label="Arrow pad">🎮</button><button id="mute" class="tb" aria-label="Sound">🔊</button>
-<div id="pad"><span></span><button data-d="u">▲</button><span></span><button data-d="l">◀</button><button data-d="s" style="font-size:20px">✋</button><button data-d="r">▶</button><span></span><button data-d="d">▼</button><span></span></div>
+<button id="pause" class="tb" aria-label="Pause">⏸</button><button id="mute" class="tb" aria-label="Sound">🔊</button>
+
 <button id="inst">📲 Install app</button><div id="ios">On iPhone/iPad: tap Share ⬆ then “Add to Home Screen”</div>
 <script>
 const c=document.getElementById('c'),g=c.getContext('2d'),_lj=0,$=id=>document.getElementById(id),R=Math.random,TAU=Math.PI*2,PICK=a=>a[Math.floor(R()*a.length)];
@@ -59,13 +57,10 @@ const TUNE=[659,784,880,784,659,523,587,659,0,587,523,494,523,587,659,0,784,880,
 setInterval(()=>{if(muted||paused||!ac||(state!='dig'&&state!='kitchen'))return;const f=TUNE[ti++%TUNE.length];if(f)bell(f,0,.5,.022)},280);
 // ---------- UI buttons
 const D={u:[0,-1],d:[0,1],l:[-1,0],r:[1,0],s:[0,0]};
-let padOn=localStorage.getItem('spqPad')=='1';
-function ui(){const p=state=='dig'||state=='kitchen';['pause','mute'].forEach(i=>$(i).style.display=p?'block':'none');$('padt').style.display=state=='dig'?'block':'none';$('pad').style.display=padOn&&state=='dig'?'grid':'none';$('inst').style.display=(state=='title'||state=='over')&&dp?'block':'none';$('ios').style.display=state=='title'&&/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone?'block':'none'}
-$('padt').onclick=e=>{e.stopPropagation();padOn=!padOn;localStorage.setItem('spqPad',padOn?'1':'0');ui()};
+function ui(){const p=state=='dig'||state=='kitchen';['pause','mute'].forEach(i=>$(i).style.display=p?'block':'none');$('inst').style.display=(state=='title'||state=='over')&&dp?'block':'none';$('ios').style.display=state=='title'&&/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone?'block':'none'}
 $('mute').textContent=muted?'🔇':'🔊';$('mute').onclick=e=>{e.stopPropagation();muted=!muted;localStorage.setItem('spqMute',muted?'1':'0');$('mute').textContent=muted?'🔇':'🔊'};
 function togglePause(){if(state!='dig'&&state!='kitchen')return;paused=!paused;$('pause').textContent=paused?'▶':'⏸'}
 $('pause').onclick=e=>{e.stopPropagation();togglePause()};
-document.querySelectorAll('#pad button').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();A();want(D[b.dataset.d])}));
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused&&(state=='dig'||state=='kitchen'))togglePause()});
 function want(d){if(!suzy)return;suzy.want=d}
 addEventListener('keydown',e=>{const k={ArrowUp:'u',KeyW:'u',ArrowDown:'d',KeyS:'d',ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r'}[e.code];
@@ -259,7 +254,7 @@ for(let i=0;i<6;i++)potato(W*(.12+i*.16),H*(.62+(i%2)*.12)+Math.sin(t*.05+i)*4*S
 suzyArt(W*.5,H*.4,90*S,1);g.fillStyle='rgba(255,250,235,.92)';g.beginPath();g.roundRect(W*.05,H*.05,W*.9,H*.22,24*S);g.fill();g.strokeStyle='#e8833a';g.lineWidth=5*S;g.stroke();
 bounceTxt("Suzy's",H*.1,34);bounceTxt('Potato Quest',H*.17,38);g.fillStyle='#5a2a0a';g.font=`bold ${Math.min(13*S,W*.034)}px "Comic Sans MS",sans-serif`;g.textAlign='center';g.fillText('Dig up 10 potatoes, then cook them into mash!',W/2,H*.235,W*.85);
 g.fillStyle='rgba(255,250,235,.9)';g.beginPath();g.roundRect(W*.05,H*.5,W*.9,H*.3,20*S);g.fill();
-const how=['⬅➡⬆⬇ Swipe (or 🎮 arrows) to dig tunnels','Tap to stop · Grab every 🥔','Grumpy moles bite, falling rocks bonk: 3 ❤️','Dig under a rock to drop it on a mole!','Kitchen: scrub, peel, cook, then mash!'];
+const how=['⬅➡⬆⬇ Swipe (or arrow keys) to dig tunnels','Tap to stop · Grab every 🥔','Grumpy moles bite, falling rocks bonk: 3 ❤️','Dig under a rock to drop it on a mole!','Kitchen: scrub, peel, cook, then mash!'];
 how.forEach((h,i)=>{g.fillStyle='#5a2a0a';g.font=`bold ${Math.min(14*S,W*.036)}px "Comic Sans MS",sans-serif`;g.fillText(h,W/2,H*.54+i*H*.05,W*.84)});
 if(t%60<42)txt('Tap to start!',W/2,H*.86,26);if(best)txt('Best: '+best,W/2,H*.92,16,'#fff3c4');if(t%12==0)sparkAt(W*.1+R()*W*.8,H*.06+R()*H*.2,2,1);drawFx2()}
 function drawFx2(){for(const p of parts){p.x+=p.vx;p.y+=p.vy;p.l--}parts=parts.filter(p=>p.l>0);drawFx()}
