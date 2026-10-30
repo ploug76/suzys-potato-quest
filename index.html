@@ -164,7 +164,7 @@ E(-rx*.3,-ry*.35,rx*.25,ry*.12,'rgba(255,255,255,.25)',-.3);g.restore()}
 /* leg rig (Grey Heart leg check, Oct 2026): legs stride with movement, ease to standing when stopped */
 function legAmp(o,mv){const now=performance.now()/1000,dt=Math.min(.1,Math.max(0,now-(o._lt||now)));o._lt=now;o._la=(o._la||0)+((mv?1:0)-(o._la||0))*Math.min(1,dt*10);return o._la<.01?0:o._la}
 const SZL={};
-function suzyArt(x,y,sz,flip){const s=sz/30,live=suzy&&x===cx(suzy.x),la=live?legAmp(SZL,suzy.dir&&(suzy.dir[0]||suzy.dir[1])):0,lp=live?suzy.step*6:0;g.save();g.translate(x,y+Math.abs(Math.sin((suzy?suzy.step:t*.05)*6))*-2*s);g.scale(flip<0?-1:1,1);
+function suzyArt(x,y,sz,flip){const s=sz/30,live=suzy&&x===cx(suzy.x),la=live?legAmp(SZL,suzy.dir&&(suzy.dir[0]||suzy.dir[1])):0,lp=live?suzy.step*1.75:0;g.save();g.translate(x,y+Math.abs(Math.sin((suzy?suzy.step:t*.05)*1.75))*-2*s);/* cadence (arm check, Oct 30 2026): ~1.7 steps/s digging, ~2.8 running a tunnel (were ~5.7/9.7) */g.scale(flip<0?-1:1,1);
 for(const k of [-1,1]){const a=k*Math.sin(lp)*.55*la,lf=Math.max(0,k*Math.cos(lp))*2*s*la;g.save();g.translate(k*3.5*s,7*s-lf);g.rotate(-a);g.fillStyle='#3a5ba0';g.fillRect(-2.5*s,0,5*s,7*s);E(.5*s,7*s,4*s,2*s,'#6d3a1a');g.restore()}
 g.fillStyle='#ff8fb8';g.fillRect(-8*s,-6*s,16*s,8*s);g.fillStyle='#4a78d0';g.beginPath();g.moveTo(-8*s,-1*s);g.lineTo(8*s,-1*s);g.lineTo(8*s,10*s);g.lineTo(-8*s,10*s);g.fill();g.fillRect(-6*s,-6*s,3*s,6*s);g.fillRect(3*s,-6*s,3*s,6*s);E(-4.5*s,-1*s,1*s,1*s,'#ffd23f');E(4.5*s,-1*s,1*s,1*s,'#ffd23f');
 g.strokeStyle='#8b5a2b';g.lineWidth=2*s;g.beginPath();g.moveTo(9*s,-4*s);g.lineTo(15*s,10*s);g.stroke();g.fillStyle='#bbb';g.beginPath();g.moveTo(13*s,9*s);g.lineTo(18*s,9*s);g.lineTo(16*s,15*s);g.fill();
